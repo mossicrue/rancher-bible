@@ -36,7 +36,9 @@ services:
     snapshot: null
     retention: ""
     creation: ""
-    backup_config: null
+    backup_config:
+      interval_hours: 6
+      retention: 3
   kube-api:
     image: ""
     extra_args: {}

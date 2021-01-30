@@ -7,7 +7,9 @@ User to login to the nodes is root and the ssh-key is defined in my notes
 Step to do in the server that will become the Rancher Node
 
 ### Install Docker on the target host
-Just follow the docker guides of the os you choose, in my case, ubuntu: https://docs.docker.com/engine/install/ubuntu/
+Just follow the docker guides of the os you choose, in my case, ubuntu: https://docs.docker.com/engine/install/ubuntu/. Remember to install a Rancher compatible version of Docker
+
+apt-get install docker-ce=5:19.03.14~3-0~ubuntu-focal docker-ce-cli=5:19.03.14~3-0~ubuntu-focal containerd.io
 
 ### Set root login for ssh
 - Start to edit the ssh configuration file launching `vi /etc/ssh/sshd_config`
@@ -20,20 +22,20 @@ Simply run `usermod -a -G docker root`
 ## Prepare the Bastion host
 Step to do in the client or server that will become the Bastion Host
 
-## Install RKE binary
+### Install RKE binary
 - Download RKE binary from https://github.com/rancher/rke/releases
 - chmod +x the binary just downloaded
 - Move it to /usr/local/bin or any directory included in $PATH
 - Test installation by issueing `rke --version`
 
-## Create the ssh-key to access the Rancher Nodes without password
+### Create the ssh-key to access the Rancher Nodes without password
 - On the Bastion host run `ssh-keygen -t rsa -f rancher-id_rsa`
 - Copy the public key on the Rancher Node
 - Add the key in the `~/.ssh/authorized_keys` file of the node
 - Restart ssh service
 
-## Create rke configuration file
-Run `rke-config` to create the `cluster.yaml` file and follow the steps prompted. Here an example of the output value passed by me
+### Create rke configuration file
+Run `rke-config` to create the `cluster.yaml` file and follow the steps prompted. Here an example output of the configuration I build
 
 ```
 MacBookPro:rancher-bible mossicrue$ rke config
@@ -49,17 +51,9 @@ MacBookPro:rancher-bible mossicrue$ rke config
 [+] Is host (10.211.55.5) a Control Plane host (y/n)? [y]:
 [+] Is host (10.211.55.5) a Worker host (y/n)? [n]: y
 [+] Is host (10.211.55.5) an etcd host (y/n)? [n]: y
-[+] Override Hostname of host (10.211.55.5) [none]:
-[+] Internal IP of host (10.211.55.5) [none]:
-[+] Docker socket path on host (10.211.55.5) [/var/run/docker.sock]:
-[+] Network Plugin Type (flannel, calico, weave, canal, aci) [canal]:
-[+] Authentication Strategy [x509]:
-[+] Authorization Mode (rbac, none) [rbac]:
-[+] Kubernetes Docker image [rancher/hyperkube:v1.19.7-rancher1]:
-[+] Cluster domain [cluster.local]:
-[+] Service Cluster IP Range [10.43.0.0/16]:
-[+] Enable PodSecurityPolicy [n]:
-[+] Cluster Network CIDR [10.42.0.0/16]:
-[+] Cluster DNS Service IP [10.43.0.10]:
-[+] Add addon manifest URLs or YAML files [no]:
 ```
+
+## Deploy Kubernetes Cluster
+
+Run the command `rke up` in the path where you put the `cluster.yaml` file.
+In case of error for an unsupported version of docker, delete the `cluster.rkestate` file and reissue `rke up` 
