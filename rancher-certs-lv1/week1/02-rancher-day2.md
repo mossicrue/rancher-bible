@@ -101,7 +101,6 @@ Rotating the CA will also restarts other system pods that will use the new CA,li
 
 This is the most comprehensive certificates rotate and is the nuclear options in case of some certificates problem
 
-
 ## Adding and removing nodes
 To add or remove a nodes, you can add or remove a nodes entry in the cluster.yml file
 You can also move, add or remove a roles from a node, keeping in mind that the minimum number of nodes for every role is:
@@ -109,20 +108,8 @@ You can also move, add or remove a roles from a node, keeping in mind that the m
 - 2 control plane
 - all the worker you need
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
--
+### Cluster Update Note
+The safest way to update the cluster (edit of cluster.yml and `rke up` command) is to do 1 update at time.
+For example, control-plane functionalities are on node-a and node-b and we want to move the control-plane role from node-b to node-c, what we have to do?
+- Step 1: add node-c with control-plane role
+- Step 2: remove control-plane role from node-b
