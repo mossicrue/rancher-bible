@@ -7,7 +7,10 @@ After Rancher is successfully deployed 2 new file are generated:
 
 The `kube_config_cluster.yaml` file is the kubeconfig file that you can put in the `~/.kube` directory or being setted in the `KUBECONFIG` env to log in into the server and work with them
 
-For my test, the command to run for exporting the KUBECONFIG value was: `export KUBECONFIG=/Users/mossicrue/Documents/GitHub/rancher-bible/kube_config_cluster.yml`
+For my test, the command to run for exporting the KUBECONFIG value was:
+```
+export KUBECONFIG=/Users/mossicrue/Documents/GitHub/rancher-bible/kube_config_cluster.yml
+```
 
 ## RKE Backup && Disaster Recovery
 
@@ -56,3 +59,70 @@ Then, delete the `system_images` key with all its entries, it wil be repopulated
 Finally run `rke up` to upgrade the cluster and go to take a coffee while it is upgrading.
 
 ## Certificates rotations
+You can rotate certificate by using the `rke cert rotate` command
+
+Doing a certificate rotations restarts the services where the certificates are used, causing a short interruption of the service
+
+You can rotate certificate for this scenario:
+- All the certificates
+- Certificates for a specific service
+- All certs and CA
+
+### All the certificates
+To rotate all the certificates while using the same CA run
+```
+rke cert rotate
+```
+
+### Certificate for a single service
+To rotate all the certificates of a particular services, for example `kubelet`, while using the same CA run
+```
+rke cert rotate --service kubelet
+```
+
+The Services you can rotate the certificates are:
+- etcd
+- kubelet
+- kube-apiserver
+- kube-proxy
+- kube-scheduler
+- kube-controller-manager
+
+### All certificates and CA
+To rotate all the certificates and also the CA, run
+```
+rke cert rotate --rotate-ca
+```
+
+Rotating the CA will also restarts other system pods that will use the new CA,like:
+- Networking pods (canal, calico, flannel and weave)
+- Ingress Controller pods
+- KubeDNS pods
+
+This is the most comprehensive certificates rotate and is the nuclear options in case of some certificates problem
+
+
+## Adding and removing nodes
+To add or remove a nodes, you can add or remove a nodes entry in the cluster.yml file
+You can also move, add or remove a roles from a node, keeping in mind that the minimum number of nodes for every role is:
+- 3 etcd
+- 2 control plane
+- all the worker you need
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+-
