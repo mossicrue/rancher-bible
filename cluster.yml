@@ -17,22 +17,6 @@ nodes:
   ssh_cert_path: ""
   labels: {}
   taints: []
-- address: 10.211.55.11
-  port: "22"
-  internal_address: ""
-  role:
-  - controlplane
-  - worker
-  - etcd
-  hostname_override: "node-b"
-  user: root
-  docker_socket: /var/run/docker.sock
-  ssh_key: ""
-  ssh_key_path: /Users/mossicrue/Documents/GitHub/rancher-bible/rancher-id_rsa
-  ssh_cert: ""
-  ssh_cert_path: ""
-  labels: {}
-  taints: []
 services:
   etcd:
     image: ""
