@@ -7,9 +7,10 @@ User to login to the nodes is root and the ssh-key is defined in my notes
 Step to do in the server that will become the Rancher Node
 
 ### Install Docker on the target host
-Just follow the docker guides of the os you choose, in my case, ubuntu: https://docs.docker.com/engine/install/ubuntu/. Remember to install a Rancher compatible version of Docker
-
+Just follow the docker guides of the os you choose, in my case, ubuntu: https://docs.docker.com/engine/install/ubuntu/. Remember to install a Rancher compatible version of Docker, in my case I have to run
+```
 apt-get install docker-ce=5:19.03.14~3-0~ubuntu-focal docker-ce-cli=5:19.03.14~3-0~ubuntu-focal containerd.io
+```
 
 ### Set root login for ssh
 - Start to edit the ssh configuration file launching `vi /etc/ssh/sshd_config`
@@ -66,4 +67,4 @@ MacBookPro:rancher-bible mossicrue$ grep kubernetesVersion cluster.rkestate
       "kubernetesVersion": "v1.19.7-rancher1-1",
 ```
 
-The kubectl client to download will be the v1.19.7, to download them run `curl -LO https://dl.k8s.io/release/v1.19.7/bin/linux/amd64/kubectl` or `curl -LO https://dl.k8s.io/release/v1.19.7/bin/darwin/amd64/kubectl` if you are using macOS 
+The kubectl client to download will be the v1.19.7, to download them run `curl -LO https://dl.k8s.io/release/v1.19.7/bin/linux/amd64/kubectl` or `curl -LO https://dl.k8s.io/release/v1.19.7/bin/darwin/amd64/kubectl` if you are using macOS
