@@ -37,7 +37,22 @@ Run the command from the path that contain both cluster.yml and cluster.rkestate
 Have the snapshot to restore at `/opt/rke/etcd-snapshots` on one etcd node
 
 ## Upgrading Kubernetes
-- Start by upgrading local copy of `rke`
-- Use `rke config --list-version --all` to see all the supported kubernetes versions
-- Take a one-time etcd snapshot and move it in a secure place, there are no rollbacks in kubernetes upgrade, only disaster recovery
-- Set the kubernetes desired version in the `kubernetes_version` key in `cluster.yml`, DON'T set it under `system images`
+Start by upgrading local copy of `rke` following the rke installation guide, then run  `rke config --list-version --all` to see all the supported kubernetes versions, example output is:
+
+```
+MacBookPro:rancher-bible mossicrue$ rke config --list-version --all
+v1.19.7-rancher1-1
+v1.18.15-rancher1-1
+v1.16.15-rancher1-4
+v1.17.17-rancher1-1
+```
+
+From the example output the most recent kubernetes version is the `v1.19.7-rancher1-1`
+After taking notes the new version to upgrade, perform a one-time etcd snapshot that will be moved in a secure place, there are no rollbacks in kubernetes upgrade, if something wrong happen you must restore the cluster at the pre-update state.
+
+Now, set the kubernetes desired version that we found before in the `kubernetes_version` key in `cluster.yml` and **DON'T** set it under `system images`!
+Then, delete the `system_images` key with all its entries, it wil be repopulated with a newer versions of that images.
+
+Finally run `rke up` to upgrade the cluster and go to take a coffee while it is upgrading.
+
+## Certificates rotations

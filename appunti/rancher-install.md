@@ -54,6 +54,16 @@ MacBookPro:rancher-bible mossicrue$ rke config
 ```
 
 ## Deploy Kubernetes Cluster
-
 Run the command `rke up` in the path where you put the `cluster.yaml` file.
-In case of error for an unsupported version of docker, delete the `cluster.rkestate` file and reissue `rke up` 
+In case of error for an unsupported version of docker, delete the `cluster.rkestate` file and reissue `rke up`
+
+## Install kubectl
+First of all, we need to know which version of kubernetes is running to install a compatible version of kubectl. To find them run `grep kubernetesVersion cluster.rkestate` the output will be more like this:
+
+```
+MacBookPro:rancher-bible mossicrue$ grep kubernetesVersion cluster.rkestate
+      "kubernetesVersion": "v1.19.7-rancher1-1",
+      "kubernetesVersion": "v1.19.7-rancher1-1",
+```
+
+The kubectl client to download will be the v1.19.7, to download them run `curl -LO https://dl.k8s.io/release/v1.19.7/bin/linux/amd64/kubectl` or `curl -LO https://dl.k8s.io/release/v1.19.7/bin/darwin/amd64/kubectl` if you are using macOS 
