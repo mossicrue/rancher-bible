@@ -67,4 +67,10 @@ MacBookPro:rancher-bible mossicrue$ grep kubernetesVersion cluster.rkestate
       "kubernetesVersion": "v1.19.7-rancher1-1",
 ```
 
-The kubectl client to download will be the v1.19.7, to download them run `curl -LO https://dl.k8s.io/release/v1.19.7/bin/linux/amd64/kubectl` or `curl -LO https://dl.k8s.io/release/v1.19.7/bin/darwin/amd64/kubectl` if you are using macOS
+The kubectl client to download will be the v1.19.7, to download it run
+```curl -LO https://dl.k8s.io/release/v1.19.7/bin/linux/amd64/kubectl
+```
+or, if you are using macOS
+```
+curl -LO https://dl.k8s.io/release/v1.19.7/bin/darwin/amd64/kubectl
+```
