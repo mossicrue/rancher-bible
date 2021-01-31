@@ -6,16 +6,16 @@ User to login to the nodes is root and the ssh-key is defined in my notes
 ## Prepare the Rancher Node
 Step to do in the server that will become the Rancher Node
 
+### Set root login for ssh
+- Start to edit the ssh configuration file launching `vi /etc/ssh/sshd_config`
+- Add the row `PermitRootLogin yes`
+- Restart ssh daemon, eg: `systemctl restart ssh`
+
 ### Install Docker on the target host
 Just follow the docker guides of the os you choose, in my case, ubuntu: https://docs.docker.com/engine/install/ubuntu/. Remember to install a Rancher compatible version of Docker, in my case I have to run
 ```
 apt-get install docker-ce=5:19.03.14~3-0~ubuntu-focal docker-ce-cli=5:19.03.14~3-0~ubuntu-focal containerd.io
 ```
-
-### Set root login for ssh
-- Start to edit the ssh configuration file launching `vi /etc/ssh/sshd_config`
-- Add the row `PermitRootLogin yes`
-- Restart ssh daemon, eg: `systemctl restart ssh`
 
 ### Add login user to docker group
 Simply run `usermod -a -G docker root`
