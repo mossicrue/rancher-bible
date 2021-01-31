@@ -1,7 +1,7 @@
 # If you intened to deploy Kubernetes in an air-gapped environment,
 # please consult the documentation on how to configure custom RKE images.
 nodes:
-- address: 10.211.55.5
+- address: 10.211.55.10
   port: "22"
   internal_address: ""
   role:
