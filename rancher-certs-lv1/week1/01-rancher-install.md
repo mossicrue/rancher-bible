@@ -13,7 +13,7 @@ Step to do in the server that will become the Rancher Node
 
 ### Install Docker on the target host
 Just follow the docker guides of the os you choose, in my case, ubuntu: https://docs.docker.com/engine/install/ubuntu/. Remember to install a Rancher compatible version of Docker, in my case I have to run
-```
+```bash
 apt-get install docker-ce=5:19.03.14~3-0~ubuntu-focal docker-ce-cli=5:19.03.14~3-0~ubuntu-focal containerd.io
 ```
 
@@ -38,7 +38,7 @@ Step to do in the client or server that will become the Bastion Host
 ### Create rke configuration file
 Run `rke-config` to create the `cluster.yaml` file and follow the steps prompted. Here an example output of the configuration I build
 
-```
+```bash
 MacBookPro:rancher-bible mossicrue$ rke config
 [+] Cluster Level SSH Private Key Path [~/.ssh/id_rsa]: /Users/mossicrue/Documents/GitHub/rancher-bible/rancher-id_rsa
 [+] Number of Hosts [1]:
@@ -61,17 +61,17 @@ In case of error for an unsupported version of docker, delete the `cluster.rkest
 ## Install kubectl
 First of all, we need to know which version of kubernetes is running to install a compatible version of kubectl. To find them run `grep kubernetesVersion cluster.rkestate` the output will be more like this:
 
-```
+```bash
 MacBookPro:rancher-bible mossicrue$ grep kubernetesVersion cluster.rkestate
       "kubernetesVersion": "v1.19.7-rancher1-1",
       "kubernetesVersion": "v1.19.7-rancher1-1",
 ```
 
 The kubectl client to download will be the v1.19.7, to download it run
-```
+```bash
 curl -LO https://dl.k8s.io/release/v1.19.7/bin/linux/amd64/kubectl
 ```
-or, if you are using macOS
-```
+or, if you are using macOS like me
+```bash
 curl -LO https://dl.k8s.io/release/v1.19.7/bin/darwin/amd64/kubectl
 ```

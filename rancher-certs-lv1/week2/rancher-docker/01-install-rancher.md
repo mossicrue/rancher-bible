@@ -9,7 +9,7 @@ Currently there are no way to migrate from one installation to the other, but if
 ## Install Rancher with Docker
 On a host with Docker run this command
 
-```
+```bash
 docker run -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:v2.4.13
 ```
 
@@ -25,7 +25,7 @@ There are 4 ways to secure rancher communications:
 ### BYO Self-Signed Certificates
 To use your self-signed cert, you have to attach the certificate files as docker volume
 You need 3 files: the private key, full-chain certificate and the CA cert
-```
+```bash
 docker run -d --restart=unless-stopped \
 -p 80:80 -p 443:443 \
 -v /home/ubuntu/certs/server.crt:/etc/rancher/ssl/cert.pem \
@@ -37,7 +37,7 @@ rancher/rancher:v2.4.13
 ### BYO Real Certificates
 To use real certificates, like for public enviroment, you have to do like the BYO Self-Signed Certificates method but you have to pass as docker volume only the private key and the full-chain certificate.
 The Ca cert that Rancher will use will be the one shipped by default in the container.
-```
+```bash
 docker run -d --restart=unless-stopped \
 -p 80:80 -p 443:443 \
 -v /home/ubuntu/certs/server.crt:/etc/rancher/ssl/cert.pem \
@@ -51,7 +51,7 @@ This works where Rancher can be reached on the internet directly or through port
 The Rancher server must have a DNS name that points to the IP of the Rancher server host, and it must be reachable on port 80.
 **NOTE**: The challenge can come from anywhere, so port 80 has to be open to the world.
 
-```
+```bash
 docker run -d --restart=unless-stopped \
 -p 80:80 -p 443:443 rancher/rancher:v2.4.13 \
 --acme-domain rancher.mydomain.com
@@ -62,7 +62,7 @@ docker run -d --restart=unless-stopped \
 ## Bind Volume for Rancher persistent data
 Rancher creates a Docker volume for its persistent data and mounts it at `/var/lib/rancher` inside of the container.
 If you prefer, you can bind-mount a directory from the host to this location instead. By using a bind-mounted directory, backups and restores are easier than when using the Docker volume.
-```
+```bash
 docker run -d --restart=unless-stopped -p 80:80 -p 443:443 \
 -v /opt/rancher:/var/lib/rancher rancher/rancher:v2.4.13
 ```

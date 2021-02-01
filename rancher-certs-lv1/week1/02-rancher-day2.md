@@ -8,7 +8,7 @@ After Rancher is successfully deployed 2 new file are generated:
 The `kube_config_cluster.yaml` file is the kubeconfig file that you can put in the `~/.kube` directory or being setted in the `KUBECONFIG` env to log in into the server and work with them
 
 For my test, the command to run for exporting the KUBECONFIG value was:
-```
+```bash
 export KUBECONFIG=/Users/mossicrue/Documents/GitHub/rancher-bible/kube_config_cluster.yml
 ```
 
@@ -16,7 +16,7 @@ export KUBECONFIG=/Users/mossicrue/Documents/GitHub/rancher-bible/kube_config_cl
 
 By default `backup_config` in the etcd nodes of the `cluster.yml` is set to null, to configure the backup add this snippet
 
-```
+```bash
   backup_config:
     interval_hours: 6
     retention: 8
@@ -42,7 +42,7 @@ Have the snapshot to restore at `/opt/rke/etcd-snapshots` on one etcd node
 ## Upgrading Kubernetes
 Start by upgrading local copy of `rke` following the rke installation guide, then run  `rke config --list-version --all` to see all the supported kubernetes versions, example output is:
 
-```
+```bash
 MacBookPro:rancher-bible mossicrue$ rke config --list-version --all
 v1.19.7-rancher1-1
 v1.18.15-rancher1-1
@@ -70,13 +70,13 @@ You can rotate certificate for this scenario:
 
 ### All the certificates
 To rotate all the certificates while using the same CA run
-```
+```bash
 rke cert rotate
 ```
 
 ### Certificate for a single service
 To rotate all the certificates of a particular services, for example `kubelet`, while using the same CA run
-```
+```bash
 rke cert rotate --service kubelet
 ```
 
@@ -90,7 +90,7 @@ The Services you can rotate the certificates are:
 
 ### All certificates and CA
 To rotate all the certificates and also the CA, run
-```
+```bash
 rke cert rotate --rotate-ca
 ```
 
