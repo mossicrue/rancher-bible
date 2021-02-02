@@ -4,4 +4,5 @@ This is a list of task to perform to clean the installation of all the things I 
 
 - remove /usr/local/bin/rke
 - remove /usr/local/bin/kubectl
+- remove helm installation with brew uninstall helm
 - remove VMs

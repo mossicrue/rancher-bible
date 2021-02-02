@@ -34,7 +34,7 @@ If the cluster is located on premises or in an environment where you can dynamic
 MetalLB enables a service of type LoadBalancer on the cluster and assigns a dedicated IP to the service. This service would sit in front of the Ingress Controller and pass traffic to it the same way an external load balancer would.
 
 ## Install Rancher with HELM
-Rancher is installed with Helm, the package manager for Kubernetes, these instructions cover Helm 3.
+Rancher is installed with Helm version 3, the package manager for Kubernetes, that can be installed following its [installation guide](https://helm.sh/docs/intro/install/)
 All the steps must be done on the Bastion Host, the system where you ran `rke up` to install RKE, and where you have the configuration file for kubectl.
 Install Helm and verify that you're pointed at the correct cluster by running kubectl get nodes before continuing.
 
@@ -46,3 +46,28 @@ Rancher provides three repositories for Helm charts:
 - Alpha: Experimental previews of upcoming releases. Definitely not recommended for production.
 
 If you use an Alpha release, there is no support for upgrading to, from, or between releases. Alpha releases are designed to be viewed and then deleted.
+
+```bash
+helm repo add rancher stable https://releases.rancher.com/server-charts/stable
+helm repo update
+```
+
+### Create a Namespace for Rancher
+Rancher will be installed into the cattle-system namespace, which must exist before we install the chart.
+
+```bash
+kubectl create namespace cattle-system
+```
+
+### Choose Your SSL Configuration
+Rancher will always be protected by TLS, and can be provisioned with one of these options:
+- Rancher-generated self-signed certificates
+- Real certificates from Let's Encrypt
+- Certificates that you provide (real or self-signed)
+
+The Rancher-generated and Let's Encrypt certificates options require a Kubernetes package called cert-manager that handles certificate generation and renewal from external sources.
+If the cluster use private self-signed or real certificates, skip the next step.
+
+### Install cert-manager
+cert-manager is under active deployment by a company called JetStack, follow their [installation guides](https://cert-manager.io/docs/installation/) to install cert-manager
+NOTE: For the faster installation follow the [Installing with Helm](https://cert-manager.io/docs/installation/kubernetes/#installing-with-helm) guide
