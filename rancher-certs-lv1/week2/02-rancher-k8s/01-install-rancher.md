@@ -68,6 +68,18 @@ Rancher will always be protected by TLS, and can be provisioned with one of thes
 The Rancher-generated and Let's Encrypt certificates options require a Kubernetes package called cert-manager that handles certificate generation and renewal from external sources.
 If the cluster use private self-signed or real certificates, skip the next step.
 
-### Install cert-manager
+#### Install cert-manager
 cert-manager is under active deployment by a company called JetStack, follow their [installation guides](https://cert-manager.io/docs/installation/) to install cert-manager
-NOTE: For the faster installation follow the [Installing with Helm](https://cert-manager.io/docs/installation/kubernetes/#installing-with-helm) guide
+NOTE: For the course I followed the the [Install with Manifest](https://cert-manager.io/docs/installation/kubernetes/#installing-with-regular-manifests) guide. TL;DR below
+
+```bash
+# Kubernetes 1.16+
+kubectl apply -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager.yaml
+
+# Kubernetes <1.16
+kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/releases/download/v1.1.0/cert-manager-legacy.yaml
+```
+
+Check that cert-manager is working running a `kubectl get deployments -n cert-manager` and a `kubectl rollout status <deployment-name> -n cert-manager` for any deployment configured
+
+### Install Rancher
