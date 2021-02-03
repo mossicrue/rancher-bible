@@ -63,7 +63,7 @@ kubectl create namespace cattle-system
 Rancher will always be protected by TLS, and can be provisioned with one of these options:
 - Rancher-generated self-signed certificates
 - Real certificates from Let's Encrypt
-- Certificates that you provide (real or self-signed)
+- BYO Certificates (self provided, real or self-signed)
 
 The Rancher-generated and Let's Encrypt certificates options require a Kubernetes package called cert-manager that handles certificate generation and renewal from external sources.
 If the cluster use private self-signed or real certificates, skip the next step.
@@ -83,3 +83,79 @@ kubectl apply --validate=false -f https://github.com/jetstack/cert-manager/relea
 Check that cert-manager is working running a `kubectl get deployments -n cert-manager` and a `kubectl rollout status <deployment-name> -n cert-manager` for any deployment configured
 
 ### Install Rancher
+Depending on the TLS Certificate option choosen, additional flags need to be passed to the installation command to complete the procedure.
+
+#### Option 1: Rancher-Generated Self-Signed Certificates
+This is the default option when installing Rancher and it's the easyer one.
+It doesn't require any additional configuration, only specify the namespace and the hostname when installing.
+
+This installation option requires this two parameters:
+- `--namespace cattle-system`
+- `--set hostname=rancher.mydomain.com`
+
+The installation command for this option is:
+```bash
+helm install rancher rancher-stable/rancher --version v2.4.13 \
+--namespace cattle-system --set hostname=rancher.mossicrue.com
+```
+
+#### Option 2: Real Certificates from Let's Encrypt
+To request a certificate from Let's Encrypt you must have the load balancer and hostname properly configured. Let's Encrypt will issue an http-01 challenge that cert-manager will process.
+Certificates issued by Let's Encrypt will be automatically renewed before their expiration date.
+
+This installation option requires this parameters:
+- `--namespace cattle-system`
+- `--set hostname=rancher.mydomain.com`
+- `--set ingress.tls.source=letsEncrypt`
+- `--set letsEncrypt.email=johndoe@mydomain.com`
+
+The installation command for this option is:
+```bash
+helm install rancher rancher-stable/rancher --version v2.4.13 \
+--namespace cattle-system --set hostname=rancher.mossicrue.com \
+--set ingress.tls.source=letsEncrypt \
+--set letsEncrypt.email=mossicrue@example.com
+```
+
+Let's Encrypt uses the email to communicate with you about any issues with the certificate, such as its upcoming expiration.
+
+#### Option 3: Certificates that you provide
+
+If you have your own certificates, either from a public or private CA, they will be loaded into a Kubernetes Secret and tell Rancher and the Ingress Controller to use that secret to provision TLS.
+
+This installation option requires this parameters:
+- `--namespace cattle-system`
+- `--set hostname=rancher.mydomain.com`
+- `--set ingress.tls.source=secret`
+- `--set privateCA=true`, only if the certificates are self-signed or by a private CA
+
+The installation command for this option is:
+```bash
+helm install rancher rancher-stable/rancher --version v2.4.13 \
+--namespace cattle-system --set hostname=rancher.mossicrue.com \
+--set ingress.tls.source=secret
+```
+
+After installing Rancher and tell it to use private CA certificates we now need to create the TLS secret in the kubernetes cluster and populate it with the certificate data
+
+- create the local file tls.crt with the certificate
+- create the local file tls.key with the private key
+- create the `tls` type secret called `tls-rancher-ingress` from those files
+```bash
+kubectl create secret tls tls-rancher-ingress --cert=server.crt --key=server.key -n cattle-system
+```
+
+If the installation was done with a private CA, create the CA secret
+- create the local file cacerts.pem with the private CA information
+- create the `generic` type secret called `tls-ca` from that file
+
+```bash
+kubectl create secret generic tls-ca --from-file=cacerts.pem=<ca.crt> -n cattle-system
+```
+
+### Check Rancher installation
+
+Check if rancher is deployed correctly by running
+```bash
+kubectl rollout status deployment rancher -n cattle-system
+```

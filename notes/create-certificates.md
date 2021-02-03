@@ -1,88 +1,37 @@
-# Create Root CA
-This procedure is to do only once
+# CERTIFICATES CREATION
 
-## Create Root Key
+## Create a self-signed root CA
+The follow procedure shows how to create a self-signed root CA that can be used to sign all the server certificate you need.
+For the root CA, the csr passage is optional since we don't need to share the csr with a trusted CA like GoDaddy or Let'sEncrypt, we will simply self-signed it by ourself.
 
-**Attention:** this is the key used to sign the certificate requests, anyone holding this can sign certificates on your behalf. So keep it in a safe place!
-
+First, create the root CA key to sign the RootCA. Save the key in a secure place and don't share it!
 ```bash
 openssl genrsa -out ca.key 4096
 ```
 
-If you want a password protected key just add the `-des3` option
+Then, create and self sign the root certificates using the command below and following the command prompt
+```bash
+openssl req -x509 -new -nodes -key ca.key -sha256 -days 730 -out ca.crt
+```
+Note: if no -days is specified, the root certificate will be valid only for 2 days
 
+## Create a server certificate
+This procedure is to repeat for all the server you want use the certificates
 
-## Create and self sign the Root Certificate
+First, create the certificate key, this time must be 2048 bit key long
+```bash
+openssl genrsa -out server.key 2048
+```
+
+Then, create the certificate signing request (csr) in which you will specify all the details of the certificate
+**NOTE:** Remember to specify the Common Name using an IP Adress or a domain name for the service, otherwise the certificate cannot be verified
 
 ```bash
-openssl req -x509 -new -nodes -key ca.key -sha256 -days 1024 -out ca.crt
+openssl req -new -key server.key -out server.csr
 ```
 
-Here we used our root key to create the root certificate that needs to be distributed in all the computers that have to trust us.
+Finally, generate the certificate using the `server.csr` that will be signed by the root CA certificate and key
 
-
-# Create a certificate
-
-This procedure needs to be followed for each server/appliance that needs a trusted certificate from our CA
-
-## Create the certificate key
-
-```
-openssl genrsa -out mydomain.com.key 2048
-```
-
-## Create the signing  (csr)
-
-The certificate signing request is where you specify the details for the certificate you want to generate.
-This request will be processed by the owner of the Root key (you in this case since you create it earlier) to generate the certificate.
-
-**Important:** Please mind that while creating the signign request is important to specify the `Common Name` providing the IP address or domain name for the service, otherwise the certificate cannot be verified.
-
-I will describe here two ways to gener
-
-### Method A (Interactive)
-
-If you generate the csr in this way, openssl will ask you questions about the certificate to generate like the organization details and the `Common Name` (CN) that is the web address you are creating the certificate for, e.g `mydomain.com`.
-
-```
-openssl req -new -key mydomain.com.key -out mydomain.com.csr
-```
-
-### Method B (One Liner)
-
-This method generates the same output as Method A but it's suitable for use in your automation :) .
-
-```
-openssl req -new -sha256 -key mydomain.com.key -subj "/C=US/ST=CA/O=MyOrg, Inc./CN=mydomain.com" -out mydomain.com.csr
-```
-
-If you need to pass additional config you can use the `-config` parameter, here for example I want to add alternative names to my certificate.
-
-```
-openssl req -new -sha256 \
-    -key mydomain.com.key \
-    -subj "/C=US/ST=CA/O=MyOrg, Inc./CN=mydomain.com" \
-    -reqexts SAN \
-    -config <(cat /etc/ssl/openssl.cnf \
-        <(printf "\n[SAN]\nsubjectAltName=DNS:mydomain.com,DNS:www.mydomain.com")) \
-    -out mydomain.com.csr
-```
-
-
-## Verify the csr's content
-
-```
-openssl req -in mydomain.com.csr -noout -text
-```
-
-## Generate the certificate using the `mydomain` csr and key along with the CA Root key
-
-```
-openssl x509 -req -in mydomain.com.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out mydomain.com.crt -days 500 -sha256
-```
-
-## Verify the certificate's content
-
-```
-openssl x509 -in mydomain.com.crt -text -noout
+```bash
+openssl x509 -req -in server.csr -CA ca.crt -CAkey ca.key -CAcreateserial -out server.crt -days 365 -sha256
 ```
