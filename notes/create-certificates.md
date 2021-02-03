@@ -24,7 +24,7 @@ openssl genrsa -out server.key 2048
 ```
 
 Then, create the certificate signing request (csr) in which you will specify all the details of the certificate
-**NOTE:** Remember to specify the Common Name using an IP Adress or a domain name for the service, otherwise the certificate cannot be verified
+**NOTE:** Remember to specify the Common Name using an IP Adress or a domain name for the service, otherwise the certificate cannot be verified. Domain name can also be a wildcard like *.mydomain.com
 
 ```bash
 openssl req -new -key server.key -out server.csr
