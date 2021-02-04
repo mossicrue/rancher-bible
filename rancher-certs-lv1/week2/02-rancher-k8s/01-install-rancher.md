@@ -50,7 +50,7 @@ Rancher provides three repositories for Helm charts:
 If you use an Alpha release, there is no support for upgrading to, from, or between releases. Alpha releases are designed to be viewed and then deleted.
 
 ```bash
-helm repo add rancher stable https://releases.rancher.com/server-charts/stable
+helm repo add rancher-stable https://releases.rancher.com/server-charts/stable
 helm repo update
 ```
 
@@ -161,3 +161,8 @@ Check if rancher is deployed correctly by running
 ```bash
 kubectl rollout status deployment rancher -n cattle-system
 ```
+
+Now open the URL provided to the Rancher installation and set the admin password.
+At the homepage there is a little bug that says that the cluster called `local` is unhealthy with the description "Waiting for server-url setting to be set".
+To solve this click the kebab-menu (3 vertical dots button) of the unhealthy cluster and then choose "Edit".
+In the Cluster Edit Page click directly on "save" button, now the cluster is healthy
