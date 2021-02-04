@@ -1,14 +1,14 @@
 # If you intened to deploy Kubernetes in an air-gapped environment,
 # please consult the documentation on how to configure custom RKE images.
 nodes:
-- address: 10.211.55.10
+- address: 10.211.55.11
   port: "22"
   internal_address: ""
   role:
   - controlplane
   - worker
   - etcd
-  hostname_override: "node-a"
+  hostname_override: "node-b"
   user: root
   docker_socket: /var/run/docker.sock
   ssh_key: ""
@@ -105,8 +105,6 @@ authentication:
   strategy: x509
   sans: []
   webhook: null
-addons: ""
-addons_include: []
 system_images:
   etcd: rancher/coreos-etcd:v3.4.13-rancher1
   alpine: rancher/rke-tools:v0.1.69

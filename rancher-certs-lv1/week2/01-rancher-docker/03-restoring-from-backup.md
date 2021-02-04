@@ -1,4 +1,4 @@
-# RESTORING RANCHER FROM A BACKUP
+# RESTORING RANCHER ON DOCKER FROM A BACKUP
 Like for the backup creation, the process for restoring from a backup change depending on how you made the backup.
 In both cases you're going to restore the backup tar archive into a directory that will be made available to a new Rancher server container.
 

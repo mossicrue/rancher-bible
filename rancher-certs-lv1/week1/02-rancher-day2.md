@@ -27,7 +27,7 @@ This will keep a backup available for 48 hours, 6 hours x 8 backups
 To apply the new configuration run `rke up`
 
 ### Manual Backup
-If you want to launch the command `rke etcd snapshot-save --name <backup-name> --config <cluster.yml path>`
+If you want to make a manual backup, launch the command `rke etcd snapshot-save --name <backup-name> --config <cluster.yml path>`
 If the 2 arguments aren't specified the default value will be:
 - `rke_etcd_snapshot_<pretty-print timestamp>.zip` for the backup name
 - `$PWD/cluster.yml` or `cluster.yml` for the cluster config file path
