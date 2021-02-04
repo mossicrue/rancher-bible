@@ -17,7 +17,9 @@ This installation process has more steps than the Docker container method, but i
 At the beginning the cluster won't be highly available, but you can convert it later.
 
 ## Deploy a Load Balancer in front of the cluster
-Even with a multi-node RKE cluster, you'll be accessing the Rancher server via a single URL. The ingress controller will listen on all nodes in the cluster, so deploy a load balancer to receive traffic for your chosen URL and route it to the hosts in the cluster.
+Even with a multi-node RKE cluster, you'll be accessing the Rancher server via a single URL.
+The ingress controller will listen on all nodes in the cluster, so deploy a load balancer to receive traffic for your chosen URL and route it to the hosts in the cluster.
+**NOTE**: For a single node cluster is not necessary to install a load balancer.
 
 This can be a hardware load balancer, a cloud load balancer like an ELB or NLB, or a software load balancer like Nginx or HAProxy.
 
