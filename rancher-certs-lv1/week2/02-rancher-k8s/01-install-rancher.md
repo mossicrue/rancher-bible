@@ -19,8 +19,6 @@ At the beginning the cluster won't be highly available, but you can convert it l
 ## Deploy a Load Balancer in front of the cluster
 Even with a multi-node RKE cluster, you'll be accessing the Rancher server via a single URL.
 The ingress controller will listen on all nodes in the cluster, so deploy a load balancer to receive traffic for your chosen URL and route it to the hosts in the cluster.
-**NOTE**: For a single node cluster is not necessary to install a load balancer.
-
 This can be a hardware load balancer, a cloud load balancer like an ELB or NLB, or a software load balancer like Nginx or HAProxy.
 
 Whatever you choose, operate the load balancer at Layer 4 only, passing TCP directly through on 80 and 443. Do not configure the load balance at Layer 7 for HTTP and HTTPS.
@@ -30,6 +28,8 @@ method of install.
 
 This load balancer will be dedicated to the Rancher server cluster, which will appear inside of Rancher as the “local” cluster. Workloads other than Rancher should never run on the “local” cluster, so each downstream Kubernetes cluster that Rancher manages will need its own load balancer.
 After the load balancer has been deployed, configure DNS to point your chosen hostname to the addresses or hostnames of the load balancer, according to the instructions for your chosen architecture.
+
+**NOTE**: For a single node cluster is not necessary to install a load balancer.
 
 ### Alternate Options For Cloud Native Environments
 If the cluster is located on premises or in an environment where you can dynamically attach multiple IP addresses to a node, you can look at [MetalLB](https://metallb.org/) as an option.
