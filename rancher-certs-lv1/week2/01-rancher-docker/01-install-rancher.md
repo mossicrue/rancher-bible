@@ -1,9 +1,9 @@
-# INSTALL RANCHER WITH DOCKER
+# Install Rancher with Docker
 Rancher offers 2 method of installations:
 - sanbox: 1 single docker container for everything
 - kuberentes: rancher is installed into a kubernetes cluster
 
-Sandbox installations are simple and clean, great for lab and development environment or demonstration of software and every case where Rancher is standed-up, used and teared down.
+Sandbox installations are simple and clean, great for lab and development environment or demonstration of software and every case where Rancher is standed-up, used and teared down.  
 Currently there are no way to migrate from one installation to the other, but if you want to start a lab environment that you think can be migrated to a production environment the best options is the kubernetes installation but with only one node.
 
 ## Install Rancher with Docker
@@ -13,9 +13,9 @@ On a host with Docker run this command
 docker run -d --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:v2.4.13
 ```
 
-* -d is to daemonize
-* -p 80:80 and -p 443:443 is to pass through port 80 and 443
-* --restart=unless-stopped - you want this because the backup and upgrade processes require stopping the container. If you use always then you won't ever be able to stop it. You'll have to kill it, and then you can't restart it.
+- `-d` is to daemonize
+- `-p 80:80` and `-p 443:443` is to pass through port 80 and 443
+- `--restart=unless-stopped` you want this because the backup and upgrade processes require stopping the container. If you use always then you won't ever be able to stop it. You'll have to kill it, and then you can't restart it.
 
 ## Secure connections
 There are 4 ways to secure rancher communications:
@@ -23,7 +23,7 @@ There are 4 ways to secure rancher communications:
 - BYO (Bring Your Own) Self-Signed Cert
 
 ### BYO Self-Signed Certificates
-To use your self-signed cert, you have to attach the certificate files as docker volume
+To use your self-signed cert, you have to attach the certificate files as docker volume.  
 You need 3 files: the private key, full-chain certificate and the CA cert
 ```bash
 docker run -d --restart=unless-stopped \
@@ -49,7 +49,7 @@ rancher/rancher:v2.4.13
 Rancher can also request a certificates from Let's Encrypt using the http-01 challenge format.
 This works where Rancher can be reached on the internet directly or through port forwarding or public-facing loadbalancer.
 The Rancher server must have a DNS name that points to the IP of the Rancher server host, and it must be reachable on port 80.
-**NOTE**: The challenge can come from anywhere, so port 80 has to be open to the world.
+> **NOTE**: The challenge can come from anywhere, so port 80 has to be open to the world.
 
 ```bash
 docker run -d --restart=unless-stopped \
@@ -57,7 +57,7 @@ docker run -d --restart=unless-stopped \
 --acme-domain rancher.mydomain.com
 ```
 
-**NOTE**: `--acme-domain rancher.mydomain.com` isn't a docker args but a container args that will be appended to the docker entrypoint.
+> **NOTE**: `--acme-domain rancher.mydomain.com` isn't a docker args but a container args that will be appended to the docker entrypoint.
 
 ## Bind Volume for Rancher persistent data
 Rancher creates a Docker volume for its persistent data and mounts it at `/var/lib/rancher` inside of the container.

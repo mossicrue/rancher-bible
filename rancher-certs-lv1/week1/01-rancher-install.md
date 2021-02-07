@@ -1,10 +1,10 @@
-# INSTALL RANCHER WITH RKE
-How to install a single node Rancher cluster with RKE written while studying for Rancher Certified Operator Level 1
-Bastion Host is my MacBook Pro, Rancher Node is a Parallels VM running Ubuntu Server 20.04
+# Install Rancher with rke
+How to install a single node Rancher cluster with RKE written while studying for Rancher Certified Operator Level 1.  
+Bastion Host is my MacBook Pro, Rancher Node is a Parallels VM running Ubuntu Server 20.04.  
 User to login to the nodes is root and the ssh-key is defined in my notes
 
 ## Prepare the Rancher Node
-Step to do in the server that will become the Rancher Node
+The following steps are to perform in the server that will become the Rancher Node
 
 ### Set root login for ssh
 - Start to edit the ssh configuration file launching `vi /etc/ssh/sshd_config`
@@ -12,22 +12,26 @@ Step to do in the server that will become the Rancher Node
 - Restart ssh daemon, eg: `systemctl restart ssh`
 
 ### Install Docker on the target host
-Just follow the docker guides of the os you choose, in my case, ubuntu: https://docs.docker.com/engine/install/ubuntu/. Remember to install a Rancher compatible version of Docker, in my case I have to run
+Just follow the docker guides of the os you choose, in my case, [ubuntu]( https://docs.docker.com/engine/install/ubuntu/)\.  
+Remember to install a Rancher compatible version of Docker, in my case I have to run
 ```bash
 apt-get install docker-ce=5:19.03.14~3-0~ubuntu-focal docker-ce-cli=5:19.03.14~3-0~ubuntu-focal containerd.io
 ```
 
 ### Add login user to docker group
-Simply run `usermod -a -G docker root`
+Simply run the following command
+```bash
+usermod -a -G docker root
+```
 
 ## Prepare the Bastion host
 Step to do in the client or server that will become the Bastion Host
 
 ### Install RKE binary
-- Download RKE binary from https://github.com/rancher/rke/releases
-- chmod +x the binary just downloaded
-- Move it to /usr/local/bin or any directory included in $PATH
-- Test installation by issueing `rke --version`
+- Download RKE binary from [github release page](https://github.com/rancher/rke/releases)
+- `chmod +x` the binary just downloaded to assign executable permissions
+- Move it to `/usr/local/bin` or any directory included in `$PATH` env variable
+- Test installation by running `rke --version`
 
 ### Create the ssh-key to access the Rancher Nodes without password
 - On the Bastion host run `ssh-keygen -t rsa -f rancher-id_rsa`

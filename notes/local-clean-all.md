@@ -1,4 +1,4 @@
-# Post course clean all
+# Post course local pc clean all
 
 This is a list of task to perform to clean the installation of all the things I installed in my MacBook
 

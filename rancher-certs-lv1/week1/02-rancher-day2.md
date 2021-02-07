@@ -1,46 +1,58 @@
-# DAY 2 OPERATION FOR RANCHER
+# Day 2 operation for Rancher
 
 ## Secure KUBECONFIG file
 After Rancher is successfully deployed 2 new file are generated:
-- kube_config_cluster.yaml
-- cluster.rkestates
+- `kube_config_cluster.yaml`
+- `cluster.rkestates`
 
 The `kube_config_cluster.yaml` file is the kubeconfig file that you can put in the `~/.kube` directory or being setted in the `KUBECONFIG` env to log in into the server and work with them
 
-For my test, the command to run for exporting the KUBECONFIG value was:
+For my test, the command to run for logging the cluster through the export of KUBECONFIG value was:
 ```bash
 export KUBECONFIG=/Users/mossicrue/Documents/GitHub/rancher-bible/kube_config_cluster.yml
 ```
 
 ## RKE Backup && Disaster Recovery
 
-By default `backup_config` in the etcd nodes of the `cluster.yml` is set to null, to configure the backup add this snippet
-
+By default the `backup_config` key in the etcd nodes section of the `cluster.yml` is set to `null`\.  
+To configure the backup add this snippet:
 ```bash
   backup_config:
     interval_hours: 6
     retention: 8
 ```
 
-The two key says to run a etcd backup every 6 hours, `interval_hours`, and to keep the last 8 of them `retention`.
+The two key says to run a etcd backup every 6 hours, `interval_hours`, and to keep the last 8 of them `retention`\.  
 This will keep a backup available for 48 hours, 6 hours x 8 backups
 To apply the new configuration run `rke up`
 
 ### Manual Backup
-If you want to make a manual backup, launch the command `rke etcd snapshot-save --name <backup-name> --config <cluster.yml path>`
+If you want to make a manual backup, launch the command
+```bash
+rke etcd snapshot-save --name <backup-name> --config <cluster.yml path>
+```
+
 If the 2 arguments aren't specified the default value will be:
 - `rke_etcd_snapshot_<pretty-print timestamp>.zip` for the backup name
 - `$PWD/cluster.yml` or `cluster.yml` for the cluster config file path
 
-The snapshot are saved directly on the ETCD host in the path `/opt/rke/etcd-snapshots`
+The snapshot are saved directly on the ETCD host at the path `/opt/rke/etcd-snapshots`
 
 ### Restore from a snapshot
-To restore Rancher from a previous snapshot run the command `rke etcd snapshot-restore --name <snapshot name>`
-Run the command from the path that contain both cluster.yml and cluster.rkestates
-Have the snapshot to restore at `/opt/rke/etcd-snapshots` on one etcd node
+To restore Rancher from a previous snapshot run the command
+```bash
+rke etcd snapshot-restore --name <snapshot name>
+```
+Run the command from the path that contain both cluster.yml and cluster.rkestates.  
+The snapshot to restore is to put on `/opt/rke/etcd-snapshots` in one etcd node.
 
 ## Upgrading Kubernetes
-Start by upgrading local copy of `rke` following the rke installation guide, then run  `rke config --list-version --all` to see all the supported kubernetes versions, example output is:
+Start by upgrading local copy of `rke` following the rke installation guide, then run
+```bash
+rke config --list-version --all
+```
+
+This will print all the supported kubernetes versions, below example output:
 
 ```bash
 MacBookPro:rancher-bible mossicrue$ rke config --list-version --all
@@ -99,14 +111,14 @@ Rotating the CA will also restarts other system pods that will use the new CA,li
 - Ingress Controller pods
 - KubeDNS pods
 
-This is the most comprehensive certificates rotate and is the nuclear options in case of some certificates problem
+This is the most comprehensive certificates rotate and is the nuclear options in case of some certificates problem.
 
 ## Adding and removing nodes
 To add or remove a nodes, you can add or remove a nodes entry in the cluster.yml file
 You can also move, add or remove a roles from a node, keeping in mind that the minimum number of nodes for every role is:
 - 3 etcd
 - 2 control plane
-- all the worker you need
+- All the worker you need
 
 ### Cluster Update Note
 The safest way to update the cluster (edit of cluster.yml and `rke up` command) is to do 1 update at time.

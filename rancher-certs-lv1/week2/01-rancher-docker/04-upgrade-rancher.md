@@ -10,8 +10,7 @@ docker stop infallible_shaw
 ```
 - Create a data container that uses the same volume
 ```bash
-docker create --volume-from infallible_shaw \
---name rancher-data rancher/rancher:v2.4.11
+docker create --volume-from infallible_shaw --name rancher-data rancher/rancher:v2.4.11
 ```
 - Launch a temporary container that extracts `/var/lib/rancher` to a local tar archive
 ```bash
@@ -24,8 +23,7 @@ docker pull rancher/rancher:v2.4.13
 ```
 - Start a new container with the same certificate options as the original container, adding a `--volumes-from` that points to the data container.
 ```bash
-docker run -d --volumes-from rancher-data --restart=unless-stopped \
--p 80:80 -p 443:443 rancher/rancher:v2.4.13
+docker run -d --volumes-from rancher-data --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:v2.4.13
 ```
 - Verify the upgrade by logging into the new Rancher container and confirming that it is operating correctly.
 - Delete the stopped Rancher container so that it doesn't restart if the host is rebooted.
@@ -48,8 +46,7 @@ docker pull rancher/rancher:v2.4.13
 ```
 - Start a new container with the same certificate options as the original container, mounting the bind-mount host directory to `/var/lib/rancher`
 ```bash
-docker run -d --restart=unless-stopped -p 80:80 -p 443:443 \
--v /opt/rancher:/var/lib/rancher rancher/rancher:v2.3.5
+docker run -d --restart=unless-stopped -p 80:80 -p 443:443 -v /opt/rancher:/var/lib/rancher rancher/rancher:v2.3.5
 ```
 - Verify the upgrade by logging into the new Rancher container and confirming that it is operating correctly.
 - Delete the stopped Rancher container so that it doesn't restart if the host is rebooted.

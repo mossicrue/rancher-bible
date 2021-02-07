@@ -1,10 +1,9 @@
-# BACKING UP RANCHER ON KUBERNETES
-When Rancher is installed into an RKE cluster, it uses the etcd datastore to hold its configuration.
-If you're backing up the RKE cluster, you're backing up Rancher.
+# Backing-up Rancher on Kubernetes
+When Rancher is installed into an RKE cluster, it uses the etcd datastore to hold its configuration: If you're backing up the RKE cluster, you're backing up Rancher.  
 Be sure to move backups offsite, either manually or by having RKE copy them to an S3-compatible datastore after making a snapshot.
 
 ## Manual Backup
-If you want to make a manual backup, launch the command
+If you want to make a manual backup, launch this command:
 ```bash
 rke etcd snapshot-save --name <snaphost-name> --config <cluster.yml-path>
 ```
@@ -13,23 +12,23 @@ If the 2 arguments aren't specified the default value will be:
 - `$PWD/cluster.yml` or `cluster.yml` for the cluster config file path
 
 # RESTORING RANCHER BACKUP ON KUBERNETES
-These instructions assume that you're running a three-node HA RKE cluster for Rancher. If you're running a single-node cluster, skip the step where you add the additional two nodes and continue with repointing the load balancer or DNS entry.
+These instructions assume that you're running a three-node HA RKE cluster for Rancher.  
+If you're running a single-node cluster, skip the step where you add the additional two nodes and continue with repointing the load balancer or DNS entry.
 
 ## Shut Down old cluster
-When you shut down the Rancher cluster that you're replacing, all of the downstream clusters will continue to operate.
-Users who connect through the Rancher server to manage clusters will be unable to do so, until the Rancher cluster is restored, but all operational workloads will continue to run. Kubernetes will continue to maintain state.
+When you shut down the Rancher cluster that you're replacing, all of the downstream clusters will continue to operate.  
+Users who connect through the Rancher server to manage clusters will be unable to do so, until the Rancher cluster is restored, but all operational workloads will continue to run. Kubernetes will continue to maintain state.  
 The downstream servers can still be accessible through ssh connection or similar.
 
 We shut down the old cluster nodes to cleanly disconnect the downstream clusters from Rancher.
 
 ## Prepare New Nodes
-First, prepare three new nodes for the new cluster. These can be the same size or larger than the existing Rancher server nodes.
-Then, choose one of these nodes to be the initial "target node" for the restore.
+First, prepare three new nodes for the new cluster. These can be the same size or larger than the existing Rancher server nodes.  
+Then, choose one of these nodes to be the initial "target node" for the restore.  
 We will bring this node up first and then add the other two once the cluster is online.
 
 ## Configure RKE
-Now, make a backup copy of the RKE cluster.yml and cluster.rkestate files you used to build the original cluster. Store these in a safe place until the new cluster is online.
-Then, edit cluster.yml and make the following changes:
+Now, make a backup copy of the RKE cluster.yml and cluster.rkestate files you used to build the original cluster. Store these in a safe place until the new cluster is online. Then, edit cluster.yml and make the following changes:
 - Remove or comment out the entire addons section. The information about the Rancher deployment is already in etcd backup.
 - Change the nodes section to point to the new nodes
 - Comment out all the nodes section except the chosen target node.
@@ -37,7 +36,7 @@ Then, edit cluster.yml and make the following changes:
 ## Restore the Database
 How you perform the initial restore of the database depends on where the data is stored: locally or on a S3 bucket.
 
-### Snapshot Stored Locally
+### Snapshot stored locally
 First, move the snapshot you want to restore on the bastion host from an old cluster node.
 Then, copy it into /opt/rke/etcd-snapshots on the target node of the new cluster
 Finally, restore the snapshot with rke etcd snapshot-restore, passing it the name of the snapshot and pointing to the cluster.yml file
@@ -45,9 +44,9 @@ Finally, restore the snapshot with rke etcd snapshot-restore, passing it the nam
 rke etcd snapshot-restore --name restore-lab-v2.4.13-2021-02-04 --config cluster.yml
 ```
 
-**NOTE**: In case of `Error: snapshot missing hash but --skip-hash-check=false` remember to remove the .zip file extension form the --name options parameter
+> **NOTE**: In case of `Error: snapshot missing hash but --skip-hash-check=false` remember to remove the **.zip** file extension form the --name options parameter
 
-### Snapshot Stored on S3
+### Snapshot stored on S3
 To restore a cluster from a snapshot with on Amazon S3 Bucket, still use the rke etcd snapshot-restore adding it the parameters needed to access S3.
 ```bash
 rke etcd snapshot-restore --s3 --name restore-lab-v2.4.13-2021-02-04.zip --config config.yml \
@@ -56,11 +55,11 @@ rke etcd snapshot-restore --s3 --name restore-lab-v2.4.13-2021-02-04.zip --confi
 ```
 
 ## Bring Up the Cluster
-Bring up the cluster on the target node by running rke up, pointing to the cluster config file.
+Bring up the cluster on the target node by running rke up, pointing to the cluster config file.  
 When the cluster is ready, RKE will write a credentials file to the local directory.
 Configure kubectl to use this file and then check on the status of the cluster. Wait for the target node to change to Ready. The three old nodes will be in a NotReady state.
 
-## Complete the Transition to the New Cluster
+## Complete the transition to the new Cluster
 - When the target node is Ready, remove the old nodes with `kubectl delete node`.
 - Reboot the target node to ensure cluster networking and services are in a clean state
 - Wait until all pods in kube-system, ingress-nginx, and the rancher pod in cattle-system return to a Running state
