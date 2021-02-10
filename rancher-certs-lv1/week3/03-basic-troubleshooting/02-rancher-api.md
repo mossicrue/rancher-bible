@@ -17,8 +17,8 @@ First you’ll need cluster access. Depending on the state of the system how to 
 If we are using an account that can access to the UI, the logs we’ll be looking at will be as follow:
 - Navigate to the local cluster.
 - Select the system project.
-- From "Resources" drop down menu, select the workloads.
-- Necessary resources will be in the cattle-system namespace
+- From _"Resources"_ drop down menu, select _"Workloads"_.
+- Necessary resources will be in the `cattle-system` namespace
 
 #### CLI Access
 If the Rancher Authentication Proxy is still running, you can use the kubeconfig file provided by Rancher and make the troubleshooting by using the `kubectl` command to check the current situation.
