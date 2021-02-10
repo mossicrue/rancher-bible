@@ -69,3 +69,4 @@ If they are botjh started we can move on to fetching the logs from these contain
 
 ```bash
 docker logs kubelet
+```
