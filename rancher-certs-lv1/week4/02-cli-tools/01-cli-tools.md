@@ -74,11 +74,102 @@ rancher app install --set persistentVolume.enabled=false --set env.email=mossicr
 ```
 The application is PgAdmin 4 (a user interface for PostgreSQL) and will be installed using helm charts `pgadmin4` and naming the app `pgadmin4`  . The `--set` are used to disable the persistent volume and set the admin email for the login.
 
+The command `rancher app ls` is useful also to check the application deployment status, when the State is active, the application would be online
+```bash
+rancher app ls
+ID                 NAME       STATE       CATALOG       TEMPLATE   VERSION
+p-lx5f9:pgadmin4   pgadmin4   deployng    local/runix   pgadmin4   1.4.6
+```
+
 To retrieve more infromation about the installed applications run
 ```bash
 rancher app show notes pgadmin4
+NOTES:
+1. Get the application URL by running these commands:
+  export POD_NAME=$(kubectl get pods --namespace pgadmin4-m2jfx -l "app.kubernetes.io/name=pgadmin4,app.kubernetes.io/instance=pgadmin4" -o jsonpath="{.items[0].metadata.name}")
+  echo "Visit http://127.0.0.1:8080 to use your application"
+  kubectl port-forward $POD_NAME 8080:80
 ```
 
-#### Proxying Kubectl Commands
+When we look at those notes for the app, the output shows us how to get the pod name so that we can port forward a connection to it.
+
+#### Why not using Helm?
+Why not directly using Helm for install an helm applications?  
+Well, because:
+- In addition to helm you can also use this with Rancher apps (find more in the next chapters)
+- Because you can replace all `kubectl` and `kubernetes` config file with the `rancher` command
+
+One of the useful addition with the Rancher cli is an SSH proxy to your cluster nodes.  
+This works with rke clusters launched in an infrastructure provider because rancher has the SSH keys to make those connections.
+
+You don't need to know where nodes are, what the address are or really anything.  
+
+The output of `rancher nodes` shows you information about the nodes and, if they were part of a deployed cluster we will see info about which pool they are in and their description.
+
+```bash
+rancher nodes
+ID                    NAME      STATE     POOL      DESCRIPTION
+local:machine-lfww9   node-b    active
+```
+
+We use rancher ssh to connect to it
+
+```bash
+rancher ssh node-b
+```
+
+### Proxying Kubectl Commands
 If you're using the Rancher CLI, you don't also need a kubectl config file.  
-After authenticating with the cluster, you can run rancher kubectl to access all of the power of kubectl directly through the API connection.
+After authenticating with the cluster, you can run rancher kubectl to access all of the power of kubectl directly through the API connection that rancher provides.
+
+After you made a rancher login you can simply use `rancher kubectl` to execute all the `kubectl` commands and subcommands via the Rancher api.  
+For example, running `kubectl get nodes` command will return an error output like below because the `$KUBECONFIG` is not set.
+
+```bash
+kubectl get nodes
+The connection to the server localhost:8080 was refused - did you specify the right host or port?
+```
+
+To perform this via the `rancher` commands, simply  run the following command:
+
+```bash
+rancher kubectl get nodes
+NAME     STATUS   ROLES                      AGE    VERSION
+node-b   Ready    controlplane,etcd,worker   7d8h   v1.19.7
+```
+
+Another adds on top of the existing Kubernetes resources is with namespaces.  
+With kubectl you can create and delete namespaces but when using the `rancher` cli you can also add them to namespace groups or move them between projects.  
+The output is also cleaner with the rancher command, in this example it shows you the namespaces in the context you are working which helps focus on the informations that is needed right now
+
+```bash
+rancher namespaces ls
+ID               NAME             STATE     PROJECT         DESCRIPTION
+pgadmin4-m2jfx   pgadmin4-m2jfx   active    local:p-lx5f9
+```
+
+```bash
+rancher kubectl get namespace
+NAME                                     STATUS   AGE
+cattle-global-data                       Active   7d7h
+cattle-global-nt                         Active   7d7h
+cattle-system                            Active   7d8h
+cert-manager                             Active   7d8h
+cluster-fleet-local-local-1a3d67d0a899   Active   4h
+default                                  Active   7d8h
+fleet-clusters-system                    Active   4h1m
+fleet-default                            Active   3h59m
+fleet-local                              Active   4h
+fleet-system                             Active   4h1m
+ingress-nginx                            Active   7d8h
+kube-node-lease                          Active   7d8h
+kube-public                              Active   7d8h
+kube-system                              Active   7d8h
+local                                    Active   7d7h
+p-62snh                                  Active   7d7h
+p-6bch4                                  Active   7d7h
+p-lx5f9                                  Active   4h33m
+pgadmin4-m2jfx                           Active   177m
+rancher-operator-system                  Active   4h1m
+user-7swkp                               Active   7d7h
+```
