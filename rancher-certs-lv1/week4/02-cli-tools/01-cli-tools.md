@@ -1,4 +1,4 @@
-# Introduction to CLI Tools
+# CLI Tools
 
 Rancher and Kubernetes are designed with an API first approach.  
 The command line utiltiy for interacting with kubernetes is kubectlm also know as kubecontrol or kubecuttle.  
