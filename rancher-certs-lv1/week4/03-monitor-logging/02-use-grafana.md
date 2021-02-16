@@ -15,19 +15,27 @@ projects directly.
 
 ### Cluster Installation
 - Visit the Apps menu in the System project
+
 - Mouse over the /index.html links in the cluster-monitoring app.  
 One will point to Grafana and the other to Prometheus
+
 - Click the corresponding link for the service you wish to visit
+
 - A new tab or window will open to that service
 
 ### Project Installation
 - Visit the Apps menu in the project
+
 - Mouse over the /index.html links in the project-monitoring app.
 One will point to Grafana and the other to Prometheus
+
 - Click the corresponding link for the service you wish to visit
+
 - A new tab or window will open to that service
 
 ## Direct Access to Prometheus and Grafana in Rancher +2.5.0
-- In the top left of the page click on the "Cluster Explorer" drop-down menu
+- In the top left of the Dahsboard page click on the "Cluster Explorer" drop-down menu
+
 - Now select the "Monitoring" entry
+
 - Here are listed all the Prometheus and Grafana apps deployed, click on the service you want to use
