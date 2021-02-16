@@ -72,9 +72,37 @@ If you are migrating from an older version of Rancher with monitoring enabled,  
 
 - Wait for the `monitoring-operator` and `cluster-monitoring` apps to be removed
 
-### Enable Cluster Monitoring from
+### Enable Cluster Monitoring from Marketplace
+
 - In the Rancher UI, go to the cluster where you want to install monitoring and click Cluster Explorer.
+
 - Click Apps.
+
 - Click the rancher-monitoring app.
+
 - Optional: Click Chart Options and configure alerting, Prometheus and Grafana. For help, refer to the [configuration reference](https://rancher.com/docs/rancher/v2.x/en/monitoring-alerting/v2.5/configuration/).
+
 - Scroll to the bottom of the Helm chart README and click Install.
+
+### Create Services Monitor
+- In the Cluster Explorer dropdown menu select "Monitoring" entry
+
+- Now, select on "Service Monitors" and click on "Create from YAML"
+
+- Paste this snippet changing metadata.name, metadata.namespace and the spec.selector.matchLabels values
+
+```yaml
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: simple-app-service-monitor
+  namespace: simple-app
+spec:
+  selector:
+    matchLabels:
+      app: simple-app
+  endpoints:
+  - port: web
+```
+
+> **NOTE:** still need to study the new Rancher 2.5.x monitoring, for now and for certs requisites I will leave things as they are and adding them after the courses. For now more information [here](https://rancher.com/blog/2020/maximize-monitoring-in-rancher-2-5-with-prometheus)
