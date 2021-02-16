@@ -25,14 +25,17 @@ Here are the guide on how to Configure Alerts on Rancher +2.5.0
 
 - Fill the form for "Receiver" section by selecting the desired receiver in the dropdown menu
 
+
 - Fill the form for "Grouping" section setting:
   - set the "Group By" value with the labels by which incoming alerts are grouped together, in this example: `test-pod-unavailability-alert`
   - set the "Group Wait" time to "5s"
   - set the "Group Interval" time to "1s"
   - set the "Repeat Interval" time to "4h"
 
+
 - Fill the form for "Matching" section setting this:
-  - set the "Match" key/value fields to a set of equality matchers used to identify the alerts, in this example: `alert-app: simple-app`
+  - set the "Match" key/value fields to a set of equality matchers used to identify the alerts, in this example: `alertname="pod-counter-alert"`
+
 
 - Finally, create the Route by clicking on "Create"
 
@@ -50,12 +53,14 @@ Here are the guide on how to Configure Alerts on Rancher +2.5.0
 
 - Select the namespace for the rules and insert a name and, optionally, a description for the rules
 
+
 - Fill the "Rule Group 1" section with settings:
   - set the "Group Name"
   - click on "Add Alert" to add an Alerting Rules
-  - set an "Alert Name"
+  - set an "Alert Name", in the example `pod-counter-alert`
   - set the "PromQL Expression" with the value `kube_deployment_status_replicas_available{deployment="simple-app"} < kube_deployment_spec_replicas{deployment="simple-app"}`
   - set the "Severity" value of the alert
+
 
 > **NOTE:** In order to help users to create their custom Prometheus rules, Rancher has created this [page](https://rancher.com/docs/rancher/v2.x/en/monitoring-alerting/v2.5/configuration/expression/) with some useful PromQL example. Also, in the kubernetes documentation on github there are [docs](https://github.com/kubernetes/kube-state-metrics/tree/master/docs) with all the kube-state-metrics to use
 
