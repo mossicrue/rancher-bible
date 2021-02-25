@@ -10,7 +10,7 @@ The total of all namespace limits should not exceed the project limit, and this 
 ## Set Projects Resource Quotas
 - Navigate to the "Cluster" details page using the Cluster Manager dropdown menu and click on the "Projects/Namespaces" link
 
-- In the project entry you want to update resource quotas click on its "kebab" menu and select "Edit"
+- In the project entry you want to update resource quotas click on its ""3 dots"" menu and select "Edit"
 
 - In the "Project Editor" page extend the "Resource Quotas" settings and click on the "Add Quota" button
 
@@ -30,7 +30,7 @@ Not all the namespaces in a project are created equally and it's possible that t
 
 - Navigate to the "Cluster" details page using the Cluster Manager dropdown menu and click on the "Projects/Namespaces" link
 
-- In the namespace entry you want to update resource quotas click on its "kebab" menu and select "Edit"
+- In the namespace entry you want to update resource quotas click on its ""3 dots"" menu and select "Edit"
 
 - Set the Resource Quotas you want customize for this namespace
 

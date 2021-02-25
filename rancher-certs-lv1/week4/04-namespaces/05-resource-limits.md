@@ -15,7 +15,7 @@ After creating the Resource Quotas, we have to set the Resource Limits
 
 - Navigate to the "Cluster" details page using the Cluster Manager dropdown menu and click on the "Projects/Namespaces" link
 
-- In the project entry you want to update resource quotas click on its "kebab" menu and select "Edit"
+- In the project entry you want to update resource quotas click on its ""3 dots"" menu and select "Edit"
 
 - In the "Project Editor" page extend the "Container Default Resource Limit" settings and set the default resoruce limits you need
 

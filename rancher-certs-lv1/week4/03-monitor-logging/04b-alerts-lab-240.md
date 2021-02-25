@@ -21,7 +21,7 @@ Follow this guide to assign a notifiers to a node group alert:
 
 - Click on the "Tools" dropdown menu on top and select the "Alert" entry
 
-- Click on the kebab menu in the "Node Alert" group and select "Edit"
+- Click on the "3 dots" menu in the "Node Alert" group and select "Edit"
 
 - Configure the notifier at the bottom and click on "Save"
 
@@ -60,7 +60,7 @@ To set up a Project level alerts in Rancher version prior to 2.5.0, first assign
 
 - Click on the "Tools" dropdown menu on top and select the "Alert" entry
 
-- Click on kebab menu and sleect "Edit" on the "A set of alerts for workload, pod, container" group
+- Click on "3 dots" menu and sleect "Edit" on the "A set of alerts for workload, pod, container" group
 
 - Configure the notifier at the bottom and click on "Save"
 
@@ -90,6 +90,6 @@ Now, this steps will show how to set an alert on the workloads that fires when p
 
 #### Testing that works
 - Go to the Application workload page and select the workload details view
-- Click in the kebab menu on the top right and select "Pause Orchestration"
+- Click in the "3 dots" menu on the top right and select "Pause Orchestration"
 - Now select one or more pod from the leftmost checkbox
 - Click on the delete

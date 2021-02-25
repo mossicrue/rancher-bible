@@ -170,5 +170,5 @@ kubectl rollout status deployment rancher -n cattle-system
 
 Now open the URL provided to the Rancher installation and set the admin password.
 At the homepage there is a little bug that says that the cluster called `local` is unhealthy with the description _"Waiting for server-url setting to be set"_.  
-To solve this click the kebab-menu (3 vertical dots button) of the unhealthy cluster and then choose _"Edit"_.  
+To solve this click the "3 dots"-menu (3 vertical dots button) of the unhealthy cluster and then choose _"Edit"_.  
 In the Cluster Edit Page click directly on "save" button, now the cluster is healthy
