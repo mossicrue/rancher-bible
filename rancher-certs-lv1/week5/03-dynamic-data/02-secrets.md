@@ -32,7 +32,7 @@ Unlike ConfigMaps, Secrets can be assigned to a namespace or to a project. If as
 
 - In the new page click "Resources" on the dropdown menu and select the "Secrets" entry
 
-- Now click on the "Create" button in the top right and fill the forms with the requested data
+- Now click on the "Add Secret" button in the top right and fill the forms with the requested data
 
 - Fill the "Secret Values" sections with the `key=value` pair you need to add
 
