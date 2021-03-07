@@ -28,7 +28,7 @@ Unlike ConfigMaps, Secrets can be assigned to a namespace or to a project. If as
 
 ## Create a Secret in Cluster Manager
 
-- Click on the dropdown cluster / project menu on the top and select the project where create the ConfigMap
+- Click on the dropdown cluster / project menu on the top and select the project where create the Secrets
 
 - In the new page click "Resources" on the dropdown menu and select the "Secrets" entry
 
